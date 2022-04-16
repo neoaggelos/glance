@@ -24,6 +24,7 @@ from glance.api.v2 import metadef_objects
 from glance.api.v2 import metadef_properties
 from glance.api.v2 import metadef_resource_types
 from glance.api.v2 import metadef_tags
+from glance.api.v2 import product_streams
 from glance.api.v2 import schemas
 from glance.api.v2 import tasks
 from glance.common import wsgi
@@ -392,6 +393,12 @@ class API(wsgi.Router):
                        controller=reject_method_resource,
                        action='reject',
                        allowed_methods='GET, POST, PUT, DELETE')
+
+        product_streams_resource = product_streams.create_resource()
+        mapper.connect('/streams/v1/index.json',
+                       controller=product_streams_resource,
+                       action='index',
+                       conditions={'method': ['GET']})
 
         images_resource = images.create_resource(custom_image_properties)
         mapper.connect('/images',
